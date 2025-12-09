@@ -15,8 +15,11 @@ import java.util.Optional;
 @RequestMapping("/api/livros")
 public class LivroController {
     
-    @Autowired
-    private LivroRepository livroRepository;
+    private final LivroRepository livroRepository;
+    
+    public LivroController(LivroRepository livroRepository) {
+        this.livroRepository = livroRepository;
+    }
     
     @PostMapping
     public ResponseEntity<Livro> criarLivro(@Valid @RequestBody Livro livro) {
@@ -68,13 +71,13 @@ public class LivroController {
         
         Livro livro = livroExistente.get();
         
-        if (livroAtualizado.getTitulo() != null) {
+        if (livroAtualizado.getTitulo() != null && !livroAtualizado.getTitulo().isBlank()) {
             livro.setTitulo(livroAtualizado.getTitulo());
         }
-        if (livroAtualizado.getAutor() != null) {
+        if (livroAtualizado.getAutor() != null && !livroAtualizado.getAutor().isBlank()) {
             livro.setAutor(livroAtualizado.getAutor());
         }
-        if (livroAtualizado.getIsbn() != null) {
+        if (livroAtualizado.getIsbn() != null && !livroAtualizado.getIsbn().isBlank()) {
             livro.setIsbn(livroAtualizado.getIsbn());
         }
         if (livroAtualizado.getAnoPublicacao() != null) {
